@@ -17,51 +17,75 @@ class SkillsScreen extends StatelessWidget {
       groupedSkills[skill.category]!.add(skill);
     }
 
+    // Get responsive values
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth >= AppTheme.tabletBreakpoint;
+    final isDesktop = screenWidth >= 1200;
+    final padding = isDesktop
+        ? 32.0
+        : isTablet
+        ? 24.0
+        : 16.0;
+    final crossAxisCount = isDesktop
+        ? 5
+        : isTablet
+        ? 4
+        : screenWidth >= 500
+        ? 3
+        : 2;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Skills')),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Technical Skills',
-              style: Theme.of(context).textTheme.headlineMedium,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return SingleChildScrollView(
+            padding: EdgeInsets.all(padding),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Technical Skills',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  'My technical expertise and proficiency levels',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 24),
+                // Skills Grid
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: crossAxisCount,
+                    childAspectRatio: isTablet ? 0.9 : 0.85,
+                    crossAxisSpacing: isTablet ? 12 : 8,
+                    mainAxisSpacing: isTablet ? 12 : 8,
+                  ),
+                  itemCount: ProfileData.skills.length,
+                  itemBuilder: (context, index) {
+                    final skill = ProfileData.skills[index];
+                    return _SkillCard(skill: skill, isTablet: isTablet);
+                  },
+                ),
+                const SizedBox(height: 32),
+                // Skills by Category
+                Text(
+                  'Skills by Category',
+                  style: Theme.of(context).textTheme.headlineMedium,
+                ),
+                const SizedBox(height: 16),
+                ...groupedSkills.entries.map((entry) {
+                  return _CategorySection(
+                    category: entry.key,
+                    skills: entry.value,
+                  );
+                }),
+              ],
             ),
-            const SizedBox(height: 8),
-            Text(
-              'My technical expertise and proficiency levels',
-              style: Theme.of(context).textTheme.bodyMedium,
-            ),
-            const SizedBox(height: 24),
-            // Skills Grid
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 0.85,
-                crossAxisSpacing: 8,
-                mainAxisSpacing: 8,
-              ),
-              itemCount: ProfileData.skills.length,
-              itemBuilder: (context, index) {
-                final skill = ProfileData.skills[index];
-                return _SkillCard(skill: skill);
-              },
-            ),
-            const SizedBox(height: 32),
-            // Skills by Category
-            Text(
-              'Skills by Category',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-            const SizedBox(height: 16),
-            ...groupedSkills.entries.map((entry) {
-              return _CategorySection(category: entry.key, skills: entry.value);
-            }),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
@@ -69,30 +93,40 @@ class SkillsScreen extends StatelessWidget {
 
 class _SkillCard extends StatelessWidget {
   final Skill skill;
+  final bool isTablet;
 
-  const _SkillCard({required this.skill});
+  const _SkillCard({required this.skill, required this.isTablet});
 
   @override
   Widget build(BuildContext context) {
+    final radius = isTablet ? 30.0 : 25.0;
+    final lineWidth = isTablet ? 5.0 : 4.0;
+    final iconSize = isTablet ? 24.0 : 20.0;
+    final fontSize = isTablet ? 13.0 : 12.0;
+
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(12),
+        padding: EdgeInsets.all(isTablet ? 14 : 12),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             CircularPercentIndicator(
-              radius: 25,
-              lineWidth: 4,
+              radius: radius,
+              lineWidth: lineWidth,
               percent: skill.proficiency,
-              center: Icon(skill.icon, size: 20, color: AppTheme.primaryColor),
+              center: Icon(
+                skill.icon,
+                size: iconSize,
+                color: AppTheme.primaryColor,
+              ),
               progressColor: AppTheme.primaryColor,
               backgroundColor: AppTheme.primaryColor.withOpacity(0.2),
               circularStrokeCap: CircularStrokeCap.round,
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: isTablet ? 10 : 8),
             Text(
               skill.name,
-              style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 12),
+              style: TextStyle(fontWeight: FontWeight.w600, fontSize: fontSize),
               textAlign: TextAlign.center,
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
@@ -100,7 +134,10 @@ class _SkillCard extends StatelessWidget {
             const SizedBox(height: 2),
             Text(
               '${(skill.proficiency * 100).toInt()}%',
-              style: TextStyle(fontSize: 11, color: AppTheme.textSecondary),
+              style: TextStyle(
+                fontSize: fontSize - 1,
+                color: AppTheme.textSecondary,
+              ),
             ),
           ],
         ),

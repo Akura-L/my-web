@@ -27,6 +27,11 @@ class _ExperienceScreenState extends State<ExperienceScreen>
 
   @override
   Widget build(BuildContext context) {
+    // Get responsive values
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth >= AppTheme.tabletBreakpoint;
+    final isDesktop = screenWidth >= 1200;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Experience'),
@@ -35,9 +40,10 @@ class _ExperienceScreenState extends State<ExperienceScreen>
           labelColor: AppTheme.primaryColor,
           unselectedLabelColor: AppTheme.textSecondary,
           indicatorColor: AppTheme.primaryColor,
-          tabs: const [
-            Tab(text: 'Work', icon: Icon(Icons.work)),
-            Tab(text: 'Education', icon: Icon(Icons.school)),
+          labelStyle: TextStyle(fontSize: isTablet ? 15 : 14),
+          tabs: [
+            Tab(text: 'Work', icon: Icon(isTablet ? Icons.work : null)),
+            Tab(text: 'Education', icon: Icon(isTablet ? Icons.school : null)),
           ],
         ),
       ),
@@ -54,8 +60,18 @@ class _WorkExperienceTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get responsive values
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth >= AppTheme.tabletBreakpoint;
+    final isDesktop = screenWidth >= 1200;
+    final padding = isDesktop
+        ? 32.0
+        : isTablet
+        ? 24.0
+        : 16.0;
+
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -69,18 +85,40 @@ class _WorkExperienceTab extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 24),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: ProfileData.experiences.length,
-            itemBuilder: (context, index) {
-              final experience = ProfileData.experiences[index];
-              return _TimelineItem(
-                experience: experience,
-                isLast: index == ProfileData.experiences.length - 1,
-              );
-            },
-          ),
+          // Use GridView for tablet/desktop
+          isTablet
+              ? GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: isDesktop ? 24 : 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: isDesktop ? 1.4 : 1.3,
+                  ),
+                  itemCount: ProfileData.experiences.length,
+                  itemBuilder: (context, index) {
+                    final experience = ProfileData.experiences[index];
+                    return _TimelineItem(
+                      experience: experience,
+                      isLast: index == ProfileData.experiences.length - 1,
+                      isTablet: isTablet,
+                    );
+                  },
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: ProfileData.experiences.length,
+                  itemBuilder: (context, index) {
+                    final experience = ProfileData.experiences[index];
+                    return _TimelineItem(
+                      experience: experience,
+                      isLast: index == ProfileData.experiences.length - 1,
+                      isTablet: false,
+                    );
+                  },
+                ),
         ],
       ),
     );
@@ -92,8 +130,18 @@ class _EducationTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get responsive values
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth >= AppTheme.tabletBreakpoint;
+    final isDesktop = screenWidth >= 1200;
+    final padding = isDesktop
+        ? 32.0
+        : isTablet
+        ? 24.0
+        : 16.0;
+
     return SingleChildScrollView(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(padding),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -104,18 +152,40 @@ class _EducationTab extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium,
           ),
           const SizedBox(height: 24),
-          ListView.builder(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            itemCount: ProfileData.education.length,
-            itemBuilder: (context, index) {
-              final edu = ProfileData.education[index];
-              return _TimelineItem(
-                education: edu,
-                isLast: index == ProfileData.education.length - 1,
-              );
-            },
-          ),
+          // Use GridView for tablet/desktop
+          isTablet
+              ? GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: isDesktop ? 24 : 16,
+                    mainAxisSpacing: 16,
+                    childAspectRatio: isDesktop ? 1.6 : 1.4,
+                  ),
+                  itemCount: ProfileData.education.length,
+                  itemBuilder: (context, index) {
+                    final edu = ProfileData.education[index];
+                    return _TimelineItem(
+                      education: edu,
+                      isLast: index == ProfileData.education.length - 1,
+                      isTablet: isTablet,
+                    );
+                  },
+                )
+              : ListView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  itemCount: ProfileData.education.length,
+                  itemBuilder: (context, index) {
+                    final edu = ProfileData.education[index];
+                    return _TimelineItem(
+                      education: edu,
+                      isLast: index == ProfileData.education.length - 1,
+                      isTablet: false,
+                    );
+                  },
+                ),
         ],
       ),
     );
@@ -126,9 +196,14 @@ class _TimelineItem extends StatelessWidget {
   final Experience? experience;
   final Education? education;
   final bool isLast;
+  final bool isTablet;
 
-  const _TimelineItem({this.experience, this.education, required this.isLast})
-    : assert(experience != null || education != null);
+  const _TimelineItem({
+    this.experience,
+    this.education,
+    required this.isLast,
+    required this.isTablet,
+  }) : assert(experience != null || education != null);
 
   @override
   Widget build(BuildContext context) {
@@ -142,18 +217,26 @@ class _TimelineItem extends StatelessWidget {
     final icon = isWork ? Icons.work : education!.icon;
     final location = isWork ? experience!.location : education!.location;
 
+    // Responsive values
+    final timelineWidth = isTablet ? 44.0 : 40.0;
+    final iconSize = isTablet ? 40.0 : 36.0;
+    final cardPadding = isTablet ? 20.0 : 16.0;
+    final titleSize = isTablet ? 18.0 : 16.0;
+    final subtitleSize = isTablet ? 15.0 : 14.0;
+    final iconInCardSize = isTablet ? 20.0 : 18.0;
+
     return IntrinsicHeight(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Timeline
           SizedBox(
-            width: 40,
+            width: timelineWidth,
             child: Column(
               children: [
                 Container(
-                  width: 36,
-                  height: 36,
+                  width: iconSize,
+                  height: iconSize,
                   decoration: BoxDecoration(
                     color: AppTheme.primaryColor,
                     shape: BoxShape.circle,
@@ -165,7 +248,7 @@ class _TimelineItem extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: Icon(icon, color: Colors.white, size: 18),
+                  child: Icon(icon, color: Colors.white, size: iconInCardSize),
                 ),
                 if (!isLast)
                   Expanded(
@@ -177,20 +260,20 @@ class _TimelineItem extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: isTablet ? 16 : 12),
           // Content
           Expanded(
             child: Card(
-              margin: const EdgeInsets.only(bottom: 20),
+              margin: EdgeInsets.only(bottom: isTablet ? 24 : 20),
               child: Padding(
-                padding: const EdgeInsets.all(16),
+                padding: EdgeInsets.all(cardPadding),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontSize: titleSize,
                         fontWeight: FontWeight.bold,
                         color: AppTheme.textPrimary,
                       ),
@@ -198,8 +281,8 @@ class _TimelineItem extends StatelessWidget {
                     const SizedBox(height: 4),
                     Text(
                       subtitle,
-                      style: const TextStyle(
-                        fontSize: 14,
+                      style: TextStyle(
+                        fontSize: subtitleSize,
                         fontWeight: FontWeight.w500,
                         color: AppTheme.primaryColor,
                       ),
@@ -209,29 +292,29 @@ class _TimelineItem extends StatelessWidget {
                       children: [
                         Icon(
                           Icons.calendar_today,
-                          size: 14,
+                          size: isTablet ? 15 : 14,
                           color: AppTheme.textSecondary,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           date,
-                          style: const TextStyle(
-                            fontSize: 12,
+                          style: TextStyle(
+                            fontSize: isTablet ? 13 : 12,
                             color: AppTheme.textSecondary,
                           ),
                         ),
                         const SizedBox(width: 12),
                         Icon(
                           Icons.location_on,
-                          size: 14,
+                          size: isTablet ? 15 : 14,
                           color: AppTheme.textSecondary,
                         ),
                         const SizedBox(width: 4),
                         Expanded(
                           child: Text(
                             location,
-                            style: const TextStyle(
-                              fontSize: 12,
+                            style: TextStyle(
+                              fontSize: isTablet ? 13 : 12,
                               color: AppTheme.textSecondary,
                             ),
                           ),
@@ -244,8 +327,8 @@ class _TimelineItem extends StatelessWidget {
                       const SizedBox(height: 12),
                       Text(
                         description,
-                        style: const TextStyle(
-                          fontSize: 13,
+                        style: TextStyle(
+                          fontSize: isTablet ? 14 : 13,
                           color: AppTheme.textSecondary,
                           height: 1.5,
                         ),
@@ -254,9 +337,9 @@ class _TimelineItem extends StatelessWidget {
                     if (!isWork && education!.grade != null) ...[
                       const SizedBox(height: 8),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 10,
-                          vertical: 4,
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isTablet ? 12 : 10,
+                          vertical: isTablet ? 6 : 4,
                         ),
                         decoration: BoxDecoration(
                           color: AppTheme.primaryColor.withOpacity(0.1),
@@ -264,8 +347,8 @@ class _TimelineItem extends StatelessWidget {
                         ),
                         child: Text(
                           'Grade: ${education!.grade}',
-                          style: const TextStyle(
-                            fontSize: 12,
+                          style: TextStyle(
+                            fontSize: isTablet ? 13 : 12,
                             fontWeight: FontWeight.w600,
                             color: AppTheme.primaryColor,
                           ),

@@ -29,10 +29,21 @@ class ContactScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get responsive values
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isTablet = screenWidth >= AppTheme.tabletBreakpoint;
+    final isDesktop = screenWidth >= 1200;
+    final padding = isDesktop
+        ? 32.0
+        : isTablet
+        ? 24.0
+        : 16.0;
+    final isWideScreen = screenWidth >= 600;
+
     return Scaffold(
       appBar: AppBar(title: const Text('Contact')),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(padding),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -49,7 +60,7 @@ class ContactScreen extends StatelessWidget {
             // Contact Options
             Card(
               child: Padding(
-                padding: const EdgeInsets.all(20),
+                padding: EdgeInsets.all(isTablet ? 24 : 20),
                 child: Column(
                   children: [
                     _ContactOption(
@@ -57,6 +68,7 @@ class ContactScreen extends StatelessWidget {
                       label: 'Email',
                       value: ProfileData.email,
                       onTap: () => _sendEmail(ProfileData.email),
+                      isTablet: isTablet,
                     ),
                     const Divider(height: 24),
                     _ContactOption(
@@ -64,6 +76,7 @@ class ContactScreen extends StatelessWidget {
                       label: 'Phone',
                       value: ProfileData.phone,
                       onTap: () => _makePhoneCall(ProfileData.phone),
+                      isTablet: isTablet,
                     ),
                     const Divider(height: 24),
                     _ContactOption(
@@ -71,13 +84,14 @@ class ContactScreen extends StatelessWidget {
                       label: 'Location',
                       value: ProfileData.location,
                       onTap: null,
+                      isTablet: isTablet,
                     ),
                   ],
                 ),
               ),
             ),
             const SizedBox(height: 32),
-            // Referees Section
+            // Referees Section - Use Grid for tablet/desktop
             Text('Referees', style: Theme.of(context).textTheme.headlineMedium),
             const SizedBox(height: 8),
             Text(
@@ -85,15 +99,40 @@ class ContactScreen extends StatelessWidget {
               style: Theme.of(context).textTheme.bodyMedium,
             ),
             const SizedBox(height: 16),
-            ...ProfileData.referees.map((referee) {
-              return _RefereeCard(
-                referee: referee,
-                onCall: () => _makePhoneCall(referee.phone),
-                onEmail: referee.email != null
-                    ? () => _sendEmail(referee.email!)
-                    : null,
-              );
-            }),
+            isWideScreen
+                ? GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 16,
+                          mainAxisSpacing: 16,
+                          childAspectRatio: 1.8,
+                        ),
+                    itemCount: ProfileData.referees.length,
+                    itemBuilder: (context, index) {
+                      final referee = ProfileData.referees[index];
+                      return _RefereeCard(
+                        referee: referee,
+                        onCall: () => _makePhoneCall(referee.phone),
+                        onEmail: referee.email != null
+                            ? () => _sendEmail(referee.email!)
+                            : null,
+                      );
+                    },
+                  )
+                : Column(
+                    children: ProfileData.referees.map((referee) {
+                      return _RefereeCard(
+                        referee: referee,
+                        onCall: () => _makePhoneCall(referee.phone),
+                        onEmail: referee.email != null
+                            ? () => _sendEmail(referee.email!)
+                            : null,
+                      );
+                    }).toList(),
+                  ),
             const SizedBox(height: 32),
             // Quick Actions
             Text(
@@ -108,6 +147,7 @@ class ContactScreen extends StatelessWidget {
                     icon: Icons.email,
                     label: 'Send Email',
                     onTap: () => _sendEmail(ProfileData.email),
+                    isTablet: isTablet,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -116,6 +156,7 @@ class ContactScreen extends StatelessWidget {
                     icon: Icons.phone,
                     label: 'Call Me',
                     onTap: () => _makePhoneCall(ProfileData.phone),
+                    isTablet: isTablet,
                   ),
                 ),
               ],
@@ -132,38 +173,43 @@ class _ContactOption extends StatelessWidget {
   final String label;
   final String value;
   final VoidCallback? onTap;
+  final bool isTablet;
 
   const _ContactOption({
     required this.icon,
     required this.label,
     required this.value,
     this.onTap,
+    required this.isTablet,
   });
 
   @override
   Widget build(BuildContext context) {
+    final iconSize = isTablet ? 28.0 : 24.0;
+    final iconPadding = isTablet ? 12.0 : 10.0;
+
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(8),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
+            padding: EdgeInsets.all(iconPadding),
             decoration: BoxDecoration(
               color: AppTheme.primaryColor.withOpacity(0.1),
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, color: AppTheme.primaryColor, size: 24),
+            child: Icon(icon, color: AppTheme.primaryColor, size: iconSize),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: isTablet ? 20 : 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: isTablet ? 14 : 12,
                     color: AppTheme.textSecondary,
                   ),
                 ),
@@ -171,7 +217,7 @@ class _ContactOption extends StatelessWidget {
                 Text(
                   value,
                   style: TextStyle(
-                    fontSize: 15,
+                    fontSize: isTablet ? 17 : 15,
                     fontWeight: FontWeight.w600,
                     color: onTap != null
                         ? AppTheme.primaryColor
@@ -182,7 +228,7 @@ class _ContactOption extends StatelessWidget {
             ),
           ),
           if (onTap != null)
-            Icon(Icons.chevron_right, color: AppTheme.textSecondary),
+            const Icon(Icons.chevron_right, color: AppTheme.textSecondary),
         ],
       ),
     );
@@ -202,10 +248,15 @@ class _RefereeCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isTablet =
+        MediaQuery.of(context).size.width >= AppTheme.tabletBreakpoint;
+    final avatarSize = isTablet ? 28.0 : 24.0;
+    final fontSize = isTablet ? 14.0 : 13.0;
+
     return Card(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: isTablet ? 16 : 12),
       child: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(isTablet ? 20 : 16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -213,12 +264,13 @@ class _RefereeCard extends StatelessWidget {
               children: [
                 CircleAvatar(
                   backgroundColor: AppTheme.primaryColor,
-                  radius: 24,
+                  radius: avatarSize,
                   child: Text(
                     referee.name.split(' ').map((e) => e[0]).take(2).join(),
-                    style: const TextStyle(
+                    style: TextStyle(
                       color: Colors.white,
                       fontWeight: FontWeight.bold,
+                      fontSize: fontSize,
                     ),
                   ),
                 ),
@@ -229,23 +281,23 @@ class _RefereeCard extends StatelessWidget {
                     children: [
                       Text(
                         referee.name,
-                        style: const TextStyle(
-                          fontSize: 16,
+                        style: TextStyle(
+                          fontSize: isTablet ? 17 : 15,
                           fontWeight: FontWeight.bold,
                           color: AppTheme.textPrimary,
                         ),
                       ),
                       Text(
                         referee.title,
-                        style: const TextStyle(
-                          fontSize: 14,
+                        style: TextStyle(
+                          fontSize: fontSize,
                           color: AppTheme.textSecondary,
                         ),
                       ),
                       Text(
                         referee.institution,
-                        style: const TextStyle(
-                          fontSize: 13,
+                        style: TextStyle(
+                          fontSize: fontSize - 1,
                           color: AppTheme.primaryColor,
                         ),
                       ),
@@ -260,11 +312,15 @@ class _RefereeCard extends StatelessWidget {
                 Expanded(
                   child: OutlinedButton.icon(
                     onPressed: onCall,
-                    icon: const Icon(Icons.phone, size: 18),
+                    icon: Icon(Icons.phone, size: isTablet ? 20 : 18),
                     label: Text(referee.phone),
                     style: OutlinedButton.styleFrom(
                       foregroundColor: AppTheme.primaryColor,
                       side: const BorderSide(color: AppTheme.primaryColor),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: isTablet ? 12 : 8,
+                        vertical: isTablet ? 12 : 8,
+                      ),
                     ),
                   ),
                 ),
@@ -273,11 +329,15 @@ class _RefereeCard extends StatelessWidget {
                   Expanded(
                     child: OutlinedButton.icon(
                       onPressed: onEmail,
-                      icon: const Icon(Icons.email, size: 18),
+                      icon: Icon(Icons.email, size: isTablet ? 20 : 18),
                       label: const Text('Email'),
                       style: OutlinedButton.styleFrom(
                         foregroundColor: AppTheme.primaryColor,
                         side: const BorderSide(color: AppTheme.primaryColor),
+                        padding: EdgeInsets.symmetric(
+                          horizontal: isTablet ? 12 : 8,
+                          vertical: isTablet ? 12 : 8,
+                        ),
                       ),
                     ),
                   ),
@@ -295,11 +355,13 @@ class _ActionButton extends StatelessWidget {
   final IconData icon;
   final String label;
   final VoidCallback onTap;
+  final bool isTablet;
 
   const _ActionButton({
     required this.icon,
     required this.label,
     required this.onTap,
+    required this.isTablet,
   });
 
   @override
@@ -311,7 +373,7 @@ class _ActionButton extends StatelessWidget {
       style: ElevatedButton.styleFrom(
         backgroundColor: AppTheme.primaryColor,
         foregroundColor: Colors.white,
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: isTablet ? 20 : 16),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );

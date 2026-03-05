@@ -13,6 +13,68 @@ class AppTheme {
   static const Color textSecondary = Color(0xFF8B949E);
   static const Color dividerColor = Color(0xFF30363D);
 
+  // Responsive breakpoints
+  static const double mobileBreakpoint = 600;
+  static const double tabletBreakpoint = 900;
+
+  // Get responsive font sizes based on screen width
+  static TextTheme getResponsiveTextTheme(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    final double scaleFactor = width >= tabletBreakpoint
+        ? 1.15
+        : width >= mobileBreakpoint
+        ? 1.0
+        : 0.9;
+
+    return TextTheme(
+      displayLarge: GoogleFonts.poppins(
+        fontSize: 32 * scaleFactor,
+        fontWeight: FontWeight.bold,
+        color: textPrimary,
+      ),
+      displayMedium: GoogleFonts.poppins(
+        fontSize: 28 * scaleFactor,
+        fontWeight: FontWeight.bold,
+        color: textPrimary,
+      ),
+      displaySmall: GoogleFonts.poppins(
+        fontSize: 24 * scaleFactor,
+        fontWeight: FontWeight.w600,
+        color: textPrimary,
+      ),
+      headlineMedium: GoogleFonts.poppins(
+        fontSize: 20 * scaleFactor,
+        fontWeight: FontWeight.w600,
+        color: textPrimary,
+      ),
+      titleLarge: GoogleFonts.poppins(
+        fontSize: 18 * scaleFactor,
+        fontWeight: FontWeight.w600,
+        color: textPrimary,
+      ),
+      titleMedium: GoogleFonts.poppins(
+        fontSize: 16 * scaleFactor,
+        fontWeight: FontWeight.w500,
+        color: textPrimary,
+      ),
+      bodyLarge: GoogleFonts.poppins(
+        fontSize: 16 * scaleFactor,
+        fontWeight: FontWeight.normal,
+        color: textPrimary,
+      ),
+      bodyMedium: GoogleFonts.poppins(
+        fontSize: 14 * scaleFactor,
+        fontWeight: FontWeight.normal,
+        color: textSecondary,
+      ),
+      bodySmall: GoogleFonts.poppins(
+        fontSize: 12 * scaleFactor,
+        fontWeight: FontWeight.normal,
+        color: textSecondary,
+      ),
+    );
+  }
+
   static ThemeData get darkTheme {
     return ThemeData(
       useMaterial3: true,
@@ -45,51 +107,53 @@ class AppTheme {
           color: textPrimary,
         ),
       ),
-      textTheme: TextTheme(
-        displayLarge: GoogleFonts.poppins(
-          fontSize: 32,
-          fontWeight: FontWeight.bold,
-          color: textPrimary,
-        ),
-        displayMedium: GoogleFonts.poppins(
-          fontSize: 28,
-          fontWeight: FontWeight.bold,
-          color: textPrimary,
-        ),
-        displaySmall: GoogleFonts.poppins(
-          fontSize: 24,
-          fontWeight: FontWeight.w600,
-          color: textPrimary,
-        ),
-        headlineMedium: GoogleFonts.poppins(
-          fontSize: 20,
-          fontWeight: FontWeight.w600,
-          color: textPrimary,
-        ),
-        titleLarge: GoogleFonts.poppins(
-          fontSize: 18,
-          fontWeight: FontWeight.w600,
-          color: textPrimary,
-        ),
-        titleMedium: GoogleFonts.poppins(
-          fontSize: 16,
-          fontWeight: FontWeight.w500,
-          color: textPrimary,
-        ),
-        bodyLarge: GoogleFonts.poppins(
-          fontSize: 16,
-          fontWeight: FontWeight.normal,
-          color: textPrimary,
-        ),
-        bodyMedium: GoogleFonts.poppins(
-          fontSize: 14,
-          fontWeight: FontWeight.normal,
-          color: textSecondary,
-        ),
-        bodySmall: GoogleFonts.poppins(
-          fontSize: 12,
-          fontWeight: FontWeight.normal,
-          color: textSecondary,
+      textTheme: GoogleFonts.poppinsTextTheme(
+        const TextTheme(
+          displayLarge: TextStyle(
+            fontSize: 32,
+            fontWeight: FontWeight.bold,
+            color: textPrimary,
+          ),
+          displayMedium: TextStyle(
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+            color: textPrimary,
+          ),
+          displaySmall: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w600,
+            color: textPrimary,
+          ),
+          headlineMedium: TextStyle(
+            fontSize: 20,
+            fontWeight: FontWeight.w600,
+            color: textPrimary,
+          ),
+          titleLarge: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.w600,
+            color: textPrimary,
+          ),
+          titleMedium: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w500,
+            color: textPrimary,
+          ),
+          bodyLarge: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.normal,
+            color: textPrimary,
+          ),
+          bodyMedium: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.normal,
+            color: textSecondary,
+          ),
+          bodySmall: TextStyle(
+            fontSize: 12,
+            fontWeight: FontWeight.normal,
+            color: textSecondary,
+          ),
         ),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(

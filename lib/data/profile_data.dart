@@ -8,7 +8,7 @@ class ProfileData {
   static const String phone = '+254 798 155 454';
   static const String location = 'Nairobi, Kenya';
   static const String summary =
-      '''Passionate full-stack developer specializing in Flutter for cross-platform mobile and web applications. Experienced in building real-time systems, e-commerce platforms, and automation solutions. Strong background in backend development with Node.js and MongoDB. Currently pursuing Bachelor of Applied Computer Science at Daystar University.''';
+      '''I am a Computer Scientist and Full-Stack Developer with experience building and maintaining scalable web applications. I enjoy working across both front-end and back-end technologies, including modern JavaScript frameworks, databases, and cloud services. I am passionate about writing clean, efficient code and creating digital solutions that are practical and user-friendly. I am motivated to build responsive, secure, and scalable applications from concept to deployment. My experience includes front-end development, back-end architecture, API integration, and database management. I pay close attention to detail and enjoy turning complex technical requirements into practical, reliable digital products that meet user and business needs.''';
 
   // Skills with proficiency levels (0.0 to 1.0)
   static const List<Skill> skills = [
@@ -138,7 +138,7 @@ class ProfileData {
   // Education
   static const List<Education> education = [
     Education(
-      degree: 'Bachelor of Applied Computer Science',
+      degree: 'Bachelor of Science in Applied Computer Science',
       institution: 'Daystar University',
       location: 'Athi River Campus',
       year: 'Class of 2025',
