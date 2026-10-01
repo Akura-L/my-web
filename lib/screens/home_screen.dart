@@ -233,12 +233,15 @@ class _Hero extends StatelessWidget {
       child: Center(
         child: ConstrainedBox(
           constraints: const BoxConstraints(maxWidth: 1250),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                flex: 7,
-                child: Column(
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    flex: 7,
+                    child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const _Eyebrow(label: 'FLUTTER MOBILE DEVELOPER  /  FULL-STACK ENGINEER'),
@@ -312,12 +315,18 @@ class _Hero extends StatelessWidget {
                         _HeroMeta(icon: Icons.work_history_outlined, label: '2+ years building products'),
                       ],
                     ),
+                    ],
+                  ),
+                  ),
+                  if (isWide) ...[
+                    const SizedBox(width: 72),
+                    const Expanded(flex: 4, child: _HeroPortrait()),
                   ],
-                ),
+                ],
               ),
-              if (isWide) ...[
-                const SizedBox(width: 72),
-                const Expanded(flex: 4, child: _HeroPanel()),
+              if (!isWide) ...[
+                const SizedBox(height: 34),
+                const _HeroPortrait(compact: true),
               ],
             ],
           ),
@@ -327,79 +336,74 @@ class _Hero extends StatelessWidget {
   }
 }
 
-class _HeroPanel extends StatelessWidget {
-  const _HeroPanel();
+class _HeroPortrait extends StatelessWidget {
+  const _HeroPortrait({this.compact = false});
+
+  final bool compact;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      constraints: const BoxConstraints(minHeight: 310, maxHeight: 370),
-      padding: const EdgeInsets.all(28),
+      height: compact ? 350 : 460,
       decoration: BoxDecoration(
-        color: AppTheme.textPrimary,
         borderRadius: BorderRadius.circular(6),
         boxShadow: const [
           BoxShadow(color: Color(0x1820342C), blurRadius: 36, offset: Offset(0, 18)),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Row(
-            children: [
-              const Icon(Icons.terminal, color: AppTheme.primaryColor),
-              const SizedBox(width: 10),
-              Text(
-                'BUILDING FOR REAL-WORLD USE',
-                style: GoogleFonts.dmSans(
-                  color: AppTheme.primaryColor,
-                  fontSize: 11,
-                  fontWeight: FontWeight.w700,
-                  letterSpacing: 0.8,
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(6),
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            Image.asset(
+              'lib/assets/WhatsApp Image 2026-09-23 at 11.37.47.jpeg',
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+              filterQuality: FilterQuality.medium,
+            ),
+            const DecoratedBox(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  begin: Alignment.center,
+                  end: Alignment.bottomCenter,
+                  colors: [Colors.transparent, Color(0xB8000000)],
                 ),
               ),
-            ],
-          ),
-          Text(
-            'Thoughtful software.\nUseful by design.',
-            style: GoogleFonts.manrope(
-              color: AppTheme.backgroundColor,
-              fontSize: 31,
-              height: 1.15,
-              fontWeight: FontWeight.w800,
             ),
-          ),
-          const Divider(color: Color(0xFFD9E2DC)),
-          Wrap(
-            spacing: 18,
-            runSpacing: 10,
-            children: const [
-              _FocusItem(icon: Icons.phone_iphone, label: 'Mobile'),
-              _FocusItem(icon: Icons.language, label: 'Web'),
-              _FocusItem(icon: Icons.hub_outlined, label: 'Systems'),
-            ],
-          ),
-        ],
+            Positioned(
+              left: 22,
+              right: 22,
+              bottom: 22,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'LOUIS ALVIN AKURA',
+                    style: GoogleFonts.dmSans(
+                      color: Colors.white,
+                      fontSize: 11,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.8,
+                    ),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    'Flutter & Full-Stack Developer',
+                    style: GoogleFonts.manrope(
+                      color: Colors.white,
+                      fontSize: 17,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
-}
-
-class _FocusItem extends StatelessWidget {
-  const _FocusItem({required this.icon, required this.label});
-  final IconData icon;
-  final String label;
-
-  @override
-  Widget build(BuildContext context) => Row(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Icon(icon, size: 17, color: AppTheme.primaryColor),
-      const SizedBox(width: 7),
-      Text(label, style: GoogleFonts.dmSans(color: AppTheme.backgroundColor)),
-    ],
-  );
 }
 
 class _HeroMeta extends StatelessWidget {
