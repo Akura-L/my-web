@@ -3,12 +3,14 @@ import 'package:flutter/material.dart';
 class ProfileData {
   // Personal Information
   static const String name = 'Louis Alvin Akura';
-  static const String title = 'Full-Stack Mobile/Web Developer';
+  static const String title = 'Flutter Mobile Developer | Full-Stack Engineer';
   static const String email = 'akuralouis3@gmail.com';
   static const String phone = '+254 798 155 454';
   static const String location = 'Nairobi, Kenya';
+  static const String linkedIn = 'https://linkedin.com/in/louis-akura-b959a8357';
+  static const String github = 'https://github.com/Akura-L';
   static const String summary =
-      '''I am a Computer Scientist and Full-Stack Developer with experience building and maintaining scalable web applications. I enjoy working across both front-end and back-end technologies, including modern JavaScript frameworks, databases, and cloud services. I am passionate about writing clean, efficient code and creating digital solutions that are practical and user-friendly. I am motivated to build responsive, secure, and scalable applications from concept to deployment. My experience includes front-end development, back-end architecture, API integration, and database management. I pay close attention to detail and enjoy turning complex technical requirements into practical, reliable digital products that meet user and business needs.''';
+      '''Full-Stack Developer and mobile/web application developer with 2+ years of experience building business, marketplace, transport, and financial technology solutions. Delivered a multi-role transport management platform handling real-time booking, live chat, and Google Maps integration, and reduced build time from 11 minutes to under 5 through targeted optimization. Focused on scalable, responsive applications, clean UI/UX, workflow automation, and business process optimization.''';
 
   // Skills with proficiency levels (0.0 to 1.0)
   static const List<Skill> skills = [
@@ -37,100 +39,119 @@ class ProfileData {
       category: 'Backend',
     ),
     Skill(
-      name: 'Node.js',
+      name: 'TypeScript',
       icon: Icons.javascript,
       proficiency: 0.85,
       category: 'Backend',
     ),
     Skill(
-      name: 'MongoDB',
-      icon: Icons.data_object,
+      name: 'Google Maps API',
+      icon: Icons.map,
       proficiency: 0.80,
-      category: 'Database',
+      category: 'Integrations',
     ),
-    Skill(
-      name: 'REST APIs',
-      icon: Icons.api,
-      proficiency: 0.90,
-      category: 'Backend',
-    ),
-    Skill(
-      name: 'SQL',
-      icon: Icons.table_chart,
-      proficiency: 0.75,
-      category: 'Database',
-    ),
-    Skill(
-      name: 'Machine Learning',
-      icon: Icons.psychology,
-      proficiency: 0.60,
-      category: 'AI/ML',
-    ),
+    Skill(name: 'REST APIs', icon: Icons.api, proficiency: 0.90, category: 'Backend'),
+    Skill(name: 'Vite', icon: Icons.bolt, proficiency: 0.80, category: 'Frontend'),
+    Skill(name: 'Kotlin', icon: Icons.code, proficiency: 0.70, category: 'Languages'),
+    Skill(name: 'Python', icon: Icons.code, proficiency: 0.70, category: 'Languages'),
   ];
 
   // Projects
   static const List<Project> projects = [
     Project(
-      title: 'Real-Time Online Bidding System',
+      title: 'TRANSFA',
       description:
-          'A full-stack bidding platform with live updates, authentication, and real-time auction functionality.',
-      technologies: ['Flutter', 'Node.js', 'MongoDB', 'WebSocket'],
-      icon: Icons.gavel,
-    ),
-    Project(
-      title: 'E-Commerce Platform',
-      description:
-          'Complete e-commerce solution with product listings, search, cart, checkout, order tracking, and admin dashboard.',
-      technologies: ['Flutter', 'Supabase', 'Firebase', 'REST API'],
-      icon: Icons.shopping_cart,
-    ),
-    Project(
-      title: 'WooCommerce Automation',
-      description:
-          'Product scraping system that automatically scrapes Armco products and uploads to WooCommerce via REST API with CRON scheduling.',
-      technologies: ['Node.js', 'MongoDB', 'WooCommerce REST API', 'CRON'],
-      icon: Icons.auto_fix_high,
-    ),
-    Project(
-      title: '3D Welding Tool Web App',
-      description:
-          'Custom web application for welding dimension calculations with future support for annotations and weld joint labeling.',
-      technologies: ['Flutter Web', '3D Rendering', 'Calculations'],
-      icon: Icons.construction,
+          'Multi-role transport management platform for users, drivers, managers, and sales agents, with live tracking, booking, and chat.',
+      technologies: ['Flutter', 'Firebase', 'Google Maps', 'FCM'],
+      icon: Icons.route,
     ),
     Project(
       title: 'SACCO Management System',
       description:
-          'Cross-platform SACCO finance management application replacing manual paper-based systems with secure digital solution.',
-      technologies: ['Flutter', 'Firebase', 'Real-time Updates'],
+          'Cross-platform financial system for member registration, loan management, transaction logic, and financial reporting.',
+      technologies: ['Flutter', 'Dart', 'Firebase', 'Reporting'],
       icon: Icons.account_balance,
+    ),
+    Project(
+      title: 'Business Order Management',
+      description:
+          'TypeScript business application focused on order tracking, process automation, and operational workflows for small and medium businesses.',
+      technologies: ['TypeScript', 'Vite', 'Workflow design'],
+      icon: Icons.inventory_2_outlined,
+    ),
+    Project(
+      title: 'Klembay',
+      description:
+          'Mobile-first thrift marketplace concept with product listings and a straightforward digital shopping experience.',
+      technologies: ['Flutter', 'Dart', 'Marketplace'],
+      icon: Icons.storefront_outlined,
+    ),
+    Project(
+      title: 'Renty',
+      description:
+          'Rental platform concept covering user flows for booking, renting, and service-based operations.',
+      technologies: ['Flutter', 'Dart', 'Rental platform'],
+      icon: Icons.key_outlined,
+    ),
+    Project(
+      title: 'Portfolio Website',
+      description:
+          'Personal portfolio presenting professional work, profile information, and front-end development practice.',
+      technologies: ['Flutter Web', 'Responsive UI'],
+      icon: Icons.web,
     ),
   ];
 
   // Work Experience
   static const List<Experience> experiences = [
     Experience(
-      title: 'Software & App Developer',
-      company: 'Coretec Solutions',
-      location: 'Westlands, Nairobi',
-      startDate: 'May 2024',
-      endDate: 'August 2024',
+      title: 'Mobile App Developer',
+      company: 'Ndai Africa',
+      location: 'Nairobi',
+      startDate: 'Jan 2026',
+      endDate: 'Present',
       description:
-          '''• Led end-to-end redesign of SACCO application to cross-platform solution using Flutter
-• Improved accessibility across Android, iOS, and desktop platforms
-• Enhanced UI/UX for better user satisfaction
-• Replaced manual SACCO finance management with automated digital solution
-• Improved transaction tracking, reporting accuracy, and financial transparency''',
+          'Develop cross-platform Flutter applications with real-time Firebase synchronization and REST APIs. Build responsive interfaces and integrate backend services for mobile and web clients.',
+      isWork: true,
+    ),
+    Experience(
+      title: 'Independent Developer / Project-Based Software Engineer',
+      company: 'Freelance',
+      location: 'Ongoing',
+      startDate: 'Ongoing',
+      endDate: 'Present',
+      description:
+          'Design and develop applications across business, commerce, transport, and financial sectors using Flutter/Dart and TypeScript.',
+      isWork: true,
+    ),
+    Experience(
+      title: 'Web Developer',
+      company: 'Scotch Extreme',
+      location: 'Nairobi',
+      startDate: 'Aug 2025',
+      endDate: 'Nov 2025',
+      description:
+          'Designed and deployed the company website, building responsive desktop and mobile interfaces and applying SEO and performance optimizations.',
+      isWork: true,
+    ),
+    Experience(
+      title: 'Software Developer Intern',
+      company: 'Coretec Solutions',
+      location: 'Nairobi',
+      startDate: 'May 2024',
+      endDate: 'Aug 2024',
+      description:
+          'Migrated a legacy SACCO financial system to a cross-platform Flutter application and redesigned reporting to improve accuracy and reduce manual reconciliation.',
       isWork: true,
     ),
     Experience(
       title: 'Assistant IT Personnel',
       company: 'Rophine Field School',
-      location: 'Kamulu, Nairobi',
+      location: 'Nairobi',
       startDate: 'May 2023',
-      endDate: 'September 2023',
-      description: '''• Provided IT support for software and hardware systems
-• Assisted in network setup, diagnostics, and system troubleshooting''',
+      endDate: 'Sep 2023',
+      description:
+          'Provided hands-on IT support and troubleshooting for staff and students, maintained systems, and supported the school network and devices.',
       isWork: true,
     ),
   ];
@@ -138,25 +159,10 @@ class ProfileData {
   // Education
   static const List<Education> education = [
     Education(
-      degree: 'Bachelor of Science in Applied Computer Science',
+      degree: 'BSc, Applied Computer Science',
       institution: 'Daystar University',
-      location: 'Athi River Campus',
-      year: 'Class of 2025',
-      icon: Icons.school,
-    ),
-    Education(
-      degree: 'Kenya Certificate of Secondary Education (KCSE)',
-      institution: "Mang'u High School",
-      location: 'Thika',
-      year: 'Class of 2020',
-      icon: Icons.school,
-    ),
-    Education(
-      degree: 'Kenya Certificate of Primary Education (KCPE)',
-      institution: 'Rophine Group of Schools',
-      location: 'Kamulu',
-      year: 'Class of 2016',
-
+      location: 'Nairobi',
+      year: 'Graduated 2025',
       icon: Icons.school,
     ),
   ];
@@ -181,9 +187,9 @@ class ProfileData {
 
   // Current Learning
   static const List<String> currentlyLearning = [
-    'Advanced SQL Queries',
-    'Machine Learning Fundamentals',
-    'Cyber Security',
+    'Cybersecurity',
+    'Advanced Software Development',
+    'SEO Optimization',
   ];
 }
 

@@ -1,6 +1,6 @@
 {
-    "name": "Louis Alvin Akura Portfolio",
-    "short_name": "Louis Akura",
+    "name": "My Portfolio",
+    "short_name": "Portfolio",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 import 'package:my_profile/main.dart';
@@ -8,7 +7,7 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget(const MyPortfolioApp());
 
-    // Verify that the app loads with the profile name
-    expect(find.text('Akura Louis Alvin'), findsOneWidget);
+    expect(find.text('Louis Alvin\nAkura'), findsOneWidget);
+    expect(find.text('Explore my work'), findsOneWidget);
   });
 }

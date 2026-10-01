@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
-  // Dark Theme Colors
-  static const Color primaryColor = Color(0xFF00D9FF);
-  static const Color secondaryColor = Color(0xFF0891B2);
-  static const Color accentColor = Color(0xFF22D3EE);
-  static const Color backgroundColor = Color(0xFF0D1117);
-  static const Color surfaceColor = Color(0xFF161B22);
-  static const Color cardColor = Color(0xFF21262D);
-  static const Color textPrimary = Color(0xFFF0F6FC);
-  static const Color textSecondary = Color(0xFF8B949E);
-  static const Color dividerColor = Color(0xFF30363D);
+  static const Color primaryColor = Color(0xFF176B50);
+  static const Color secondaryColor = Color(0xFF52796F);
+  static const Color accentColor = Color(0xFFDBA15D);
+  static const Color backgroundColor = Color(0xFFF4F6F3);
+  static const Color surfaceColor = Color(0xFFFFFFFF);
+  static const Color cardColor = Color(0xFFFFFFFF);
+  static const Color darkSurface = Color(0xFF182821);
+  static const Color darkCard = Color(0xFF21352B);
+  static const Color textPrimary = Color(0xFF1B2A23);
+  static const Color textSecondary = Color(0xFF5D6B63);
+  static const Color dividerColor = Color(0xFFDCE4DE);
 
   // Responsive breakpoints
   static const double mobileBreakpoint = 600;
@@ -75,15 +76,15 @@ class AppTheme {
     );
   }
 
-  static ThemeData get darkTheme {
+  static ThemeData get lightTheme {
     return ThemeData(
       useMaterial3: true,
-      brightness: Brightness.dark,
-      colorScheme: const ColorScheme.dark(
+      brightness: Brightness.light,
+      colorScheme: const ColorScheme.light(
         primary: primaryColor,
         secondary: secondaryColor,
         surface: surfaceColor,
-        onPrimary: Colors.black,
+        onPrimary: Colors.white,
         onSecondary: Colors.white,
         onSurface: textPrimary,
       ),
@@ -92,12 +93,12 @@ class AppTheme {
         color: cardColor,
         elevation: 0,
         shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(5),
           side: const BorderSide(color: dividerColor, width: 1),
         ),
       ),
       appBarTheme: AppBarTheme(
-        backgroundColor: backgroundColor,
+        backgroundColor: surfaceColor,
         foregroundColor: textPrimary,
         elevation: 0,
         centerTitle: true,
@@ -169,7 +170,7 @@ class AppTheme {
         backgroundColor: surfaceColor,
         labelStyle: const TextStyle(color: textPrimary),
         side: const BorderSide(color: dividerColor),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
       ),
     );
   }
